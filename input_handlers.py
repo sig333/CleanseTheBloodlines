@@ -24,26 +24,26 @@ def handle_player_turn_keys(key):
     # Movement keys
     key_char = chr(key.c)
 
-    if key.vk == libtcod.KEY_UP or key_char == 'k':
+    if key.vk == libtcod.KEY_UP or key.vk == libtcod.KEY_KP8:
         return {'move': (0, -1)}
-    elif key.vk == libtcod.KEY_DOWN or key_char == 'j':
+    elif key.vk == libtcod.KEY_DOWN or key.vk == libtcod.KEY_KP2:
         return {'move': (0, 1)}
-    elif key.vk == libtcod.KEY_LEFT or key_char == 'h':
+    elif key.vk == libtcod.KEY_LEFT or key.vk == libtcod.KEY_KP4:
         return {'move': (-1, 0)}
-    elif key.vk == libtcod.KEY_RIGHT or key_char == 'l':
+    elif key.vk == libtcod.KEY_RIGHT or key.vk == libtcod.KEY_KP6:
         return {'move': (1, 0)}
-    elif key_char == 'y':
+    elif key.vk == libtcod.KEY_KP7:# or (libtcod.KEY_UP and libtcod.KEY_LEFT):
         return {'move': (-1, -1)}
-    elif key_char == 'u':
+    elif key.vk == libtcod.KEY_KP9:
         return {'move': (1, -1)}
-    elif key_char == 'b':
+    elif key.vk == libtcod.KEY_KP1:
         return {'move': (-1, 1)}
-    elif key_char == 'n':
+    elif key.vk == libtcod.KEY_KP3:
         return {'move': (1, 1)}
-    elif key_char == 'z':
+    elif key_char == '.' or key.vk == libtcod.KEY_KP5 or key.vk == libtcod.KEY_DELETE:
         return {'wait': True}
 
-    if key_char == 'g':
+    if key_char == ',':
         return {'pickup': True}
     elif key_char == 'i':
         return {'show_inventory': True}

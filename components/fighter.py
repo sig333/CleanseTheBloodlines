@@ -4,11 +4,11 @@ from game_messages import Message
 
 
 class Fighter:
-    def __init__(self, hp, defense, power, xp=0):
+    def __init__(self, hp, defense, strength, xp=0):
         self.base_max_hp = hp
         self.hp = hp
         self.base_defense = defense
-        self.base_power = power
+        self.base_strength = strength
         self.xp = xp
 
     @property
@@ -27,7 +27,7 @@ class Fighter:
         else:
             bonus = 0
 
-        return self.base_power + bonus
+        return self.base_strength + bonus
 
     @property
     def defense(self):

@@ -5,8 +5,6 @@ from components.fighter import Fighter
 from components.inventory import Inventory
 from components.level import Level
 
-from entity import Entity
-
 from components.equipment_slots import EquipmentSlots
 
 from entity import Entity
@@ -21,7 +19,7 @@ from render_functions import RenderOrder
 
 
 def get_constants():
-    window_title = 'Roguelike Tutorial Revised'
+    window_title = 'Cleanse the Bloodlines Pre-Alpha'
 
     screen_width = 80
     screen_height = 50
@@ -81,7 +79,7 @@ def get_constants():
     return constants
 
 def get_game_variables(constants):
-    fighter_component = Fighter(hp=100, defense=1, power=2)
+    fighter_component = Fighter(hp=100, defense=1, strength=2)
     inventory_component = Inventory(26)
     level_component = Level()
     equipment_component = Equipment()
