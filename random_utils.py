@@ -27,3 +27,7 @@ def random_choice_from_dict(choice_dict):
     chances = list(choice_dict.values())
 
     return choices[random_choice_index(chances)]
+
+
+def sigmoid_randint():
+    return (randint(1, 100) + randint(1, 100))/2

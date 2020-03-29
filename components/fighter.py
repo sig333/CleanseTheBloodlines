@@ -2,13 +2,16 @@ import tcod as libtcod
 
 from game_messages import Message
 
+from random_utils import sigmoid_randint
+
 
 class Fighter:
-    def __init__(self, hp, defense, strength, xp=0):
+    def __init__(self, hp, defense, strength, dexterity, xp=0):
         self.base_max_hp = hp
         self.hp = hp
         self.base_defense = defense
         self.base_strength = strength
+        self.base_dexterity = dexterity
         self.xp = xp
 
     @property
@@ -38,6 +41,15 @@ class Fighter:
 
         return self.base_defense + bonus
 
+    @property
+    def dexterity(self):
+        if self.owner and self.owner.equipment:
+            bonus = self.owner.equipment.dexterity_bonus
+        else:
+            bonus = 0
+
+        return self.base_dexterity + bonus
+
     def take_damage(self, amount):
         results = []
 
@@ -59,12 +71,16 @@ class Fighter:
 
         damage = self.power - target.fighter.defense
 
-        if damage > 0:
-            results.append({'message': Message('{0} attacks {1} for {2} hit points.'.format(
-                self.owner.name.capitalize(), target.name, str(damage)), libtcod.white)})
-            results.extend(target.fighter.take_damage(damage))
+        if sigmoid_randint() < self.dexterity * 2:
+            if damage > 0:
+                results.append({'message': Message('{0} attacks {1} for {2} hit points.'.format(
+                    self.owner.name.capitalize(), target.name, str(damage)), libtcod.white)})
+                results.extend(target.fighter.take_damage(damage))
+            else:
+                results.append({'message': Message('{0} attacks {1} but does no damage.'.format(
+                    self.owner.name.capitalize(), target.name), libtcod.white)})
         else:
-            results.append({'message': Message('{0} attacks {1} but does no damage.'.format(
+            results.append({'message': Message('{0} attacks {1} but misses.'.format(
                 self.owner.name.capitalize(), target.name), libtcod.white)})
 
         return results
