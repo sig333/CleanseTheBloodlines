@@ -42,6 +42,30 @@ class Equipment:
 
         return bonus
 
+    @property
+    def dexterity_bonus(self):
+        bonus = 0
+
+        if self.main_hand and self.main_hand.equippable:
+            bonus += self.main_hand.equippable.dexterity_bonus
+
+        if self.off_hand and self.off_hand.equippable:
+            bonus += self.off_hand.equippable.dexterity_bonus
+
+        return bonus
+
+    @property
+    def accuracy(self):
+        accuracy = 0
+
+        if self.main_hand and self.main_hand.equippable:
+            accuracy += self.main_hand.equippable.accuracy
+
+        if self.off_hand and self.off_hand.equippable:
+            accuracy -= self.main_hand.equippable.accuracy/2
+
+        return accuracy
+
     def toggle_equip(self, equippable_entity):
         results = []
 

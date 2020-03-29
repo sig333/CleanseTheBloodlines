@@ -12,7 +12,7 @@ from menus import main_menu, message_box
 from render_functions import clear_all, render_all
 
 
-def play_game(player, entities, game_map, message_log, con, panel, constants):
+def play_game(player, entities, game_map, message_log, con, panel, constants, game_state):
     fov_recompute = True
 
     fov_map = initialize_fov(game_map)
@@ -323,7 +323,7 @@ def main():
 
         else:
             libtcod.console_clear(con)
-            play_game(player, entities, game_map, message_log, con, panel, constants)
+            play_game(player, entities, game_map, message_log, con, panel, constants, game_state)
 
             show_main_menu = True
 
