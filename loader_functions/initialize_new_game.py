@@ -78,17 +78,18 @@ def get_constants():
 
     return constants
 
+
 def get_game_variables(constants):
-    fighter_component = Fighter(hp=100, defense=1, strength=2, dexterity=2)
+    fighter_component = Fighter(hp=60, defense=6, strength=6, dexterity=11)
     inventory_component = Inventory(26)
-    level_component = Level()
+    level_component = Level(hp_growth=90, defense_growth=60, strength_growth=60, dexterity_growth=40)
     equipment_component = Equipment()
     player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True, render_order=RenderOrder.ACTOR,
                     fighter=fighter_component, inventory=inventory_component, level=level_component,
                     equipment=equipment_component)
     entities = [player]
 
-    equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonus=2, accuracy=80)
+    equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonus=4, accuracy=80)
     dagger = Entity(0, 0, '-', libtcod.sky, 'Dagger', equippable=equippable_component)
     player.inventory.add_item(dagger)
     player.equipment.toggle_equip(dagger)
