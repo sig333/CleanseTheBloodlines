@@ -77,7 +77,7 @@ def play_game(player, entities, game_map, message_log, con, panel, constants, ga
                                                                destination_y + (i * dy))
 
                     if target:
-                        attack_results = player.fighter.attack(target)
+                        attack_results = player.fighter.attack(player.fighter, target)
                         player_turn_results.extend(attack_results)
                         break
                 if not target:
