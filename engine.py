@@ -67,12 +67,20 @@ def play_game(player, entities, game_map, message_log, con, panel, constants, ga
             destination_y = player.y + dy
 
             if not game_map.is_blocked(destination_x, destination_y):
-                target = get_blocking_entities_at_location(entities, destination_x, destination_y)
-
-                if target:
-                    attack_results = player.fighter.attack(target)
-                    player_turn_results.extend(attack_results)
+                target = None
+                if not player.equipment.main_hand:
+                    attack_range = 1
                 else:
+                    attack_range = player.equipment.main_hand.equippable.melee_range
+                for i in range(attack_range):
+                    target = get_blocking_entities_at_location(entities, destination_x + (i * dx),
+                                                               destination_y + (i * dy))
+
+                    if target:
+                        attack_results = player.fighter.attack(target)
+                        player_turn_results.extend(attack_results)
+                        break
+                if not target:
                     player.move(dx, dy)
 
                     fov_recompute = True
