@@ -10,15 +10,17 @@ def melee_attack(self, target):
 
     damage = self.power - target.fighter.defense
 
-    if self.owner.equipment:
-        if self.owner.equipment.accuracy == 0:
-            accuracy = 80
-        else:
-            accuracy = self.owner.equipment.accuracy
-    else:
-        accuracy = 80
+    # if self.owner.equipment:
+    #     if self.owner.equipment.accuracy == 0:
+    #         accuracy = 80
+    #     else:
+    #         accuracy = self.owner.equipment.accuracy
+    # else:
+    #     accuracy = 80
 
-    if sigmoid_randint() < self.dexterity * 2 + accuracy:
+    accuracy = self.dexterity * 2 + self.owner.equipment.accuracy
+
+    if sigmoid_randint() < accuracy:
         if damage > 0:
             results.append({'message': Message('{0} attacks {1} for {2} hit points.'.format(
                 self.owner.name.capitalize(), target.name, str(damage)), libtcod.white)})
@@ -33,7 +35,48 @@ def melee_attack(self, target):
     return results
 
 
-# def unarmed_attack:
-#     results = []
-#
-#     damage = self.power - target.fighter.defense
+def unarmed_attack(self, target):
+    results = []
+
+    damage = self.power - target.fighter.defense
+    accuracy = self.dexterity * 5 + 50
+
+    if sigmoid_randint() < accuracy:
+        if damage > 0:
+            results.append({'message': Message('{0} attacks {1} for {2} hit points.'.format(
+                self.owner.name.capitalize(), target.name, str(damage)), libtcod.white)})
+            results.extend(target.fighter.take_damage(damage))
+        else:
+            results.append({'message': Message('{0} attacks {1} but does no damage.'.format(
+                self.owner.name.capitalize(), target.name), libtcod.white)})
+    else:
+        results.append({'message': Message('{0} attacks {1} but misses.'.format(
+            self.owner.name.capitalize(), target.name), libtcod.white)})
+
+    return results
+
+def polearm_attack(self, target):
+    results = []
+
+    damage = self.power - target.fighter.defense
+
+    if self.owner.distance(target.x, target.y) == 2:
+        accuracy = self.dexterity * 2 + self.owner.equipment.accuracy
+    else:
+        accuracy = self.dexterity * 2 + self.owner.equipment.accuracy - 20
+
+    if sigmoid_randint() < accuracy:
+        if damage > 0:
+            results.append({'message': Message('{0} attacks {1} for {2} hit points.'.format(
+                self.owner.name.capitalize(), target.name, str(damage)), libtcod.white)})
+            results.extend(target.fighter.take_damage(damage))
+        else:
+            results.append({'message': Message('{0} attacks {1} but does no damage.'.format(
+                self.owner.name.capitalize(), target.name), libtcod.white)})
+    else:
+        results.append({'message': Message('{0} attacks {1} but misses.'.format(
+            self.owner.name.capitalize(), target.name), libtcod.white)})
+
+    # todo stun
+
+    return results

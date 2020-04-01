@@ -1,4 +1,6 @@
 from components.equipment_slots import EquipmentSlots
+from attacks import unarmed_attack
+import types
 
 
 class Equipment:
@@ -75,12 +77,15 @@ class Equipment:
             if self.main_hand == equippable_entity:
                 self.main_hand = None
                 results.append({'dequipped': equippable_entity})
+                self.owner.fighter.set_attack(unarmed_attack)
             else:
                 if self.main_hand:
                     results.append({'dequipped': self.main_hand})
+                    self.owner.fighter.set_attack(unarmed_attack)
 
                 self.main_hand = equippable_entity
                 results.append({'equipped': equippable_entity})
+                self.owner.fighter.set_attack(equippable_entity.equippable.attack)
         elif slot == EquipmentSlots.OFF_HAND:
             if self.off_hand == equippable_entity:
                 self.off_hand = None

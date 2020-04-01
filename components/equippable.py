@@ -1,6 +1,9 @@
+from attacks import melee_attack
+
+
 class Equippable:
     def __init__(self, slot, power_bonus=0, defense_bonus=0, max_hp_bonus=0, dexterity_bonus=0, accuracy=0,
-                 melee_range=1):
+                 melee_range=1, attack = melee_attack):
         self.slot = slot
         self.power_bonus = power_bonus
         self.defense_bonus = defense_bonus
@@ -8,3 +11,4 @@ class Equippable:
         self.dexterity_bonus = dexterity_bonus
         self.accuracy = accuracy
         self.melee_range = melee_range
+        self.attack = attack
