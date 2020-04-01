@@ -31,3 +31,15 @@ def random_choice_from_dict(choice_dict):
 
 def sigmoid_randint():
     return (randint(1, 100) + randint(1, 100))/2
+
+
+def rn2(x):
+    return randint(0, x-1)
+
+
+def rne(x, truncation=3):  # Thanks to Dr. Lilian Besson for the implementation
+    truncation = max(truncation, 1)
+    tmp = 1
+    while tmp < truncation and rn2(x) == 0:
+        tmp += 1
+    return tmp

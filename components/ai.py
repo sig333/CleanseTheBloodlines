@@ -43,3 +43,21 @@ class ConfusedMonster:
             results.append({'message': Message('The {0} is no longer confused!'.format(self.owner.name), libtcod.red)})
 
         return results
+
+
+class StunnedMonster:
+    def __init__(self, previous_ai, number_of_turns=3):
+        self.previous_ai = previous_ai
+        self.number_of_turns = number_of_turns
+
+    def take_turn(self, target, fov_map, game_map, entities):
+        results = []
+
+        if self.number_of_turns > 0:
+            results.append({'message': Message('The {0} is stunned!'.format(self.owner.name), libtcod.white)})
+            self.number_of_turns -= 1
+        else:
+            self.owner.ai = self.previous_ai
+            results.append({'message': Message('The {0} is no longer stunned!'.format(self.owner.name), libtcod.red)})
+
+        return results
