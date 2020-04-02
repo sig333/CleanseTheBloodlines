@@ -54,8 +54,8 @@ def unarmed_attack(self, target):
 def polearm_attack(self, target):
     results = []
 
-    # target.status = PoisonedStatus()
-    # target.status.owner = target
+    target.status = PoisonedStatus(previous_status=target.status)
+    target.status.owner = target
 
     damage = self.power - target.fighter.defense
 

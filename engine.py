@@ -233,31 +233,32 @@ def play_game(player, entities, game_map, message_log, con, panel, constants, ga
 
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:
+                enemy_turn_results = []
                 if entity.ai:
                     enemy_turn_results = entity.ai.take_turn(player, fov_map, game_map, entities)
+                if entity.status:
+                    enemy_turn_results += entity.status.status()
 
-                    for enemy_turn_result in enemy_turn_results:
-                        message = enemy_turn_result.get('message')
-                        dead_entity = enemy_turn_result.get('dead')
+                for enemy_turn_result in enemy_turn_results:
+                    message = enemy_turn_result.get('message')
+                    dead_entity = enemy_turn_result.get('dead')
 
-                        if message:
-                            message_log.add_message(message)
+                    if message:
+                        message_log.add_message(message)
 
-                        if dead_entity:
-                            if dead_entity == player:
-                                message, game_state = kill_player(dead_entity)
-                            else:
-                                message = kill_monster(dead_entity)
+                    if dead_entity:
+                        if dead_entity == player:
+                            message, game_state = kill_player(dead_entity)
+                        else:
+                            message = kill_monster(dead_entity)
 
-                            message_log.add_message(message)
+                        message_log.add_message(message)
 
-                            if game_state == GameStates.PLAYER_DEAD:
-                                break
+                        if game_state == GameStates.PLAYER_DEAD:
+                            break
 
                     if game_state == GameStates.PLAYER_DEAD:
                         break
-                if entity.status:
-                    entity.status.status()
             else:
                 game_state = GameStates.PLAYERS_TURN
 
