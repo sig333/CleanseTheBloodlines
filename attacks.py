@@ -5,20 +5,13 @@ from game_messages import Message
 from random_utils import sigmoid_randint, rne
 
 from components.ai import StunnedMonster
+from components.status import PoisonedStatus
 
 
 def melee_attack(self, target):
     results = []
 
     damage = self.power - target.fighter.defense
-
-    # if self.owner.equipment:
-    #     if self.owner.equipment.accuracy == 0:
-    #         accuracy = 80
-    #     else:
-    #         accuracy = self.owner.equipment.accuracy
-    # else:
-    #     accuracy = 80
 
     accuracy = self.dexterity * 2 + self.owner.equipment.accuracy
 
@@ -61,6 +54,9 @@ def unarmed_attack(self, target):
 def polearm_attack(self, target):
     results = []
 
+    # target.status = PoisonedStatus()
+    # target.status.owner = target
+
     damage = self.power - target.fighter.defense
 
     if self.owner.distance(target.x, target.y) == 2:
@@ -68,13 +64,15 @@ def polearm_attack(self, target):
     else:
         accuracy = self.dexterity * 2 + self.owner.equipment.accuracy - 20
 
+    stun_chance = self.dexterity * 2 + 20
+
     if sigmoid_randint() < accuracy:
         if damage > 0:
             results.append({'message': Message('{0} attacks {1} for {2} hit points.'.format(
                 self.owner.name.capitalize(), target.name, str(damage)), libtcod.white)})
             results.extend(target.fighter.take_damage(damage))
-            # stunning
-            if sigmoid_randint() < 60:
+
+            if sigmoid_randint() < stun_chance and target.fighter.hp - damage > 0:
                 confused_ai = StunnedMonster(target.ai, rne(1, 3))
 
                 confused_ai.owner = target

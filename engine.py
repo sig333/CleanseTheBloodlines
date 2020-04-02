@@ -256,6 +256,8 @@ def play_game(player, entities, game_map, message_log, con, panel, constants, ga
 
                     if game_state == GameStates.PLAYER_DEAD:
                         break
+                if entity.status:
+                    entity.status.status()
             else:
                 game_state = GameStates.PLAYERS_TURN
 
