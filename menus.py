@@ -1,5 +1,7 @@
 import tcod as libtcod
 
+from utils import sign_char
+
 
 def menu(con, header, options, width, screen_width, screen_height):
     if len(options) > 26: raise ValueError('Cannot have a menu with more than 26 options.')
@@ -75,20 +77,21 @@ def level_up_screen(player, level_screen_width, level_screen_height, screen_widt
                                   libtcod.LEFT,
                                   'Experience to Level: {0}'.format(player.level.experience_to_next_level))
     libtcod.console_print_rect_ex(window, 0, 6, level_screen_width, level_screen_height, libtcod.BKGND_NONE,
-                                  libtcod.LEFT, 'Maximum HP: {0} + {1}'.format(
-                                    str(player.fighter.max_hp-player.level.latest_hp), player.level.latest_hp))
+                                  libtcod.LEFT, 'Maximum HP: {0} {1} {2}'.format(
+                                    str(abs(player.fighter.max_hp-player.level.latest_hp))
+                                    , sign_char(player.level.latest_hp), player.level.latest_hp))
     libtcod.console_print_rect_ex(window, 0, 7, level_screen_width, level_screen_height, libtcod.BKGND_NONE,
-                                  libtcod.LEFT, 'Strength: {0} + {1}'.format(
-                                    str(player.fighter.base_strength-player.level.latest_strength),
-                                    player.level.latest_strength))
+                                  libtcod.LEFT, 'Strength: {0} {1} {2}'.format(
+                                    str(abs(player.fighter.base_strength-player.level.latest_strength)),
+                                    sign_char(player.level.latest_strength), player.level.latest_strength))
     libtcod.console_print_rect_ex(window, 0, 8, level_screen_width, level_screen_height, libtcod.BKGND_NONE,
-                                  libtcod.LEFT, 'Defense: {0} + {1}'.format(
-                                    str(player.fighter.base_defense-player.level.latest_defense),
-                                    player.level.latest_defense))
+                                  libtcod.LEFT, 'Defense: {0} {1} {2}'.format(
+                                    str(abs(player.fighter.base_defense-player.level.latest_defense)),
+                                    sign_char(player.level.latest_defense), player.level.latest_defense))
     libtcod.console_print_rect_ex(window, 0, 9, level_screen_width, level_screen_height, libtcod.BKGND_NONE,
-                                  libtcod.LEFT, 'Dexterity: {0} + {1}'.format(
-                                    str(player.fighter.base_dexterity - player.level.latest_dexterity),
-                                    player.level.latest_dexterity))
+                                  libtcod.LEFT, 'Dexterity: {0} {1} {2}'.format(
+                                    str(abs(player.fighter.base_dexterity - player.level.latest_dexterity)),
+                                    sign_char(player.level.latest_dexterity), player.level.latest_dexterity))
     x = screen_width // 2 - level_screen_width // 2
     y = screen_height // 2 - level_screen_height // 2
     libtcod.console_blit(window, 0, 0, level_screen_width, level_screen_height, 0, x, y, 1.0, 0.7)
@@ -108,21 +111,29 @@ def character_screen(player, character_screen_width, character_screen_height, sc
     libtcod.console_print_rect_ex(window, 0, 4, character_screen_width, character_screen_height, libtcod.BKGND_NONE,
                                   libtcod.LEFT, 'Experience to Level: {0}'.format(player.level.experience_to_next_level))
     libtcod.console_print_rect_ex(window, 0, 6, character_screen_width, character_screen_height, libtcod.BKGND_NONE,
-                                  libtcod.LEFT, 'Maximum HP: {0} + {1}'.format(player.fighter.max_hp,
-                                                                               str(player.fighter.base_max_hp
-                                                                                   - player.fighter.max_hp)))
+                                  libtcod.LEFT, 'Maximum HP: {0} {1} {2}'.format(player.fighter.max_hp,
+                                                                                 sign_char(player.fighter.base_max_hp
+                                                                                   - player.fighter.max_hp),
+                                                                               str(abs(player.fighter.base_max_hp
+                                                                                   - player.fighter.max_hp))))
     libtcod.console_print_rect_ex(window, 0, 7, character_screen_width, character_screen_height, libtcod.BKGND_NONE,
-                                  libtcod.LEFT, 'Strength: {0} + {1}'.format(player.fighter.base_strength,
-                                                                             str(player.fighter.power
-                                                                                 - player.fighter.base_strength)))
+                                  libtcod.LEFT, 'Strength: {0} {1} {2}'.format(player.fighter.base_strength,
+                                                                               sign_char(player.fighter.power
+                                                                                 - player.fighter.base_strength),
+                                                                             str(abs(player.fighter.power
+                                                                                 - player.fighter.base_strength))))
     libtcod.console_print_rect_ex(window, 0, 8, character_screen_width, character_screen_height, libtcod.BKGND_NONE,
-                                  libtcod.LEFT, 'Defense: {0} + {1}'.format(player.fighter.defense, 
-                                                                            str(player.fighter.base_defense
-                                                                                - player.fighter.defense)))
+                                  libtcod.LEFT, 'Defense: {0} {1} {2}'.format(player.fighter.defense,
+                                                                              sign_char(player.fighter.defense
+                                                                                - player.fighter.base_defense),
+                                                                            str(abs(player.fighter.defense
+                                                                                - player.fighter.base_defense))))
     libtcod.console_print_rect_ex(window, 0, 9, character_screen_width, character_screen_height, libtcod.BKGND_NONE,
-                                  libtcod.LEFT, 'Dexterity: {0} + {1}'.format(player.fighter.dexterity,
-                                                                              str(player.fighter.base_dexterity
-                                                                                - player.fighter.dexterity)))
+                                  libtcod.LEFT, 'Dexterity: {0} {1} {2}'.format(player.fighter.dexterity,
+                                                                                sign_char(player.fighter.dexterity
+                                                                                - player.fighter.base_dexterity),
+                                                                              str(abs(player.fighter.dexterity
+                                                                                - player.fighter.base_dexterity))))
 
     x = screen_width // 2 - character_screen_width // 2
     y = screen_height // 2 - character_screen_height // 2

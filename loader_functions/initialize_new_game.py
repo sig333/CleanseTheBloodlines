@@ -4,7 +4,6 @@ from components.equippable import Equippable
 from components.fighter import Fighter
 from components.inventory import Inventory
 from components.level import Level
-
 from components.equipment_slots import EquipmentSlots
 
 from entity import Entity
@@ -98,6 +97,11 @@ def get_game_variables(constants):
     dagger = Entity(0, 0, '-', libtcod.sky, 'Polearm', equippable=equippable_component)
     player.inventory.add_item(dagger)
     player.equipment.toggle_equip(dagger)
+
+    heavy_equippable = Equippable(slot=EquipmentSlots.CHEST, defense_bonus=4, dexterity_bonus=-5, melee_range=0)
+    heavy_armor = Entity(0, 0, '|', libtcod.sky, 'Heavy Armor', equippable=heavy_equippable)
+    player.inventory.add_item(heavy_armor)
+    player.equipment.toggle_equip(heavy_armor)
 
     game_map = GameMap(constants['map_width'], constants['map_height'])
     game_map.make_map(constants['max_rooms'], constants['room_min_size'], constants['room_max_size'],
