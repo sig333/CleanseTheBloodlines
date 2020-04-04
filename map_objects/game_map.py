@@ -124,6 +124,8 @@ class GameMap:
             'healing_potion': 35,
             'sword': from_dungeon_level([[5, 4]], self.dungeon_level),
             'shield': from_dungeon_level([[15, 8]], self.dungeon_level),
+            'heavy_armor': from_dungeon_level([[15, 8]], self.dungeon_level),
+            'light_armor': from_dungeon_level([[15, 8]], self.dungeon_level),
             'lightning_scroll': from_dungeon_level([[25, 4]], self.dungeon_level),
             'fireball_scroll': from_dungeon_level([[25, 6]], self.dungeon_level),
             'confusion_scroll': from_dungeon_level([[10, 2]], self.dungeon_level)
@@ -169,6 +171,14 @@ class GameMap:
                 elif item_choice == 'shield':
                     equippable_component = Equippable(EquipmentSlots.OFF_HAND, defense_bonus=1)
                     item = Entity(x, y, '[', libtcod.darker_orange, 'Shield', equippable=equippable_component)
+                elif item_choice == 'heavy_armor':
+                    equippable_component = Equippable(slot=EquipmentSlots.CHEST, defense_bonus=4, dexterity_bonus=-5,
+                                                  melee_range=0)
+                    item = Entity(x, y, ']', libtcod.blue, 'Heavy Armor', equippable=equippable_component)
+                elif item_choice == 'light_armor':
+                    equippable_component = Equippable(slot=EquipmentSlots.CHEST, defense_bonus=3, dexterity_bonus=-1,
+                                                  melee_range=0)
+                    item = Entity(x, y, ']', libtcod.sky, 'Light Armor', equippable=equippable_component)
                 elif item_choice == 'fireball_scroll':
                     item_component = Item(use_function=cast_fireball, targeting=True, targeting_message=Message(
                         'Left-click a target tile for the fireball, or right-click to cancel.', libtcod.light_cyan),
