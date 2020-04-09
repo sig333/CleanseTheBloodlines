@@ -103,3 +103,21 @@ def cast_confuse(*args, **kwargs):
                                                               libtcod.yellow)})
 
     return results
+
+
+def teleport(self, *args, **kwargs):
+    game_map = kwargs.get('game_map')
+    target_x = kwargs.get('target_x')
+    target_y = kwargs.get('target_y')
+
+    results = []
+
+    if game_map.is_blocked(target_x, target_y):
+        results.append({'consumed': False,
+                        'message': Message('You can\'t teleport into something.', libtcod.yellow)})
+        return results
+
+    results.append({'consumed': True, 'teleport': {'x': target_x, 'y': target_y},
+                    'message': Message('Out of the frying pan...', libtcod.orange)})
+
+    return results

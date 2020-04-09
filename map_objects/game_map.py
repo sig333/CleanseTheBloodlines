@@ -1,5 +1,6 @@
 import tcod as libtcod
 from random import randint
+import types
 
 from components.ai import BasicMonster
 from components.equipment import EquipmentSlots
@@ -12,7 +13,7 @@ from entity import Entity
 
 from game_messages import Message
 
-from item_functions import cast_confuse, cast_fireball, cast_lightning, heal
+from item_functions import cast_confuse, cast_fireball, cast_lightning, heal, teleport
 
 from map_objects.rectangle import Rect
 from map_objects.tile import Tile
@@ -122,6 +123,7 @@ class GameMap:
 
         item_chances = {
             'healing_potion': 35,
+            'teleport_scroll': 35,
             'sword': from_dungeon_level([[5, 4]], self.dungeon_level),
             'shield': from_dungeon_level([[15, 8]], self.dungeon_level),
             'heavy_armor': from_dungeon_level([[15, 8]], self.dungeon_level),
@@ -186,14 +188,20 @@ class GameMap:
                     item = Entity(x, y, '#', libtcod.red, 'Fireball Scroll', render_order=RenderOrder.ITEM,
                                   item=item_component)
                 elif item_choice == 'confusion_scroll':
-                    item_component = Item(use_function=cast_fireball, targeting=True, targeting_message=Message(
-                        'Left-click a target tile for the fireball, or right-click to cancel.', libtcod.light_cyan),
+                    item_component = Item(use_function=cast_confuse, targeting=True, targeting_message=Message(
+                        'Left-click a target tile for the confusion waves, or right-click to cancel.', libtcod.light_cyan),
                                           damage=25, radius=3)
                     item = Entity(x, y, '#', libtcod.light_pink, 'Confusion Scroll', render_order=RenderOrder.ITEM,
                                   item=item_component)
                 elif item_choice == 'lightning_scroll':
                     item_component = Item(use_function=cast_lightning, damage=40, maximum_range=5)
                     item = Entity(x, y, '#', libtcod.yellow, 'Lightning Scroll', render_order=RenderOrder.ITEM,
+                                  item=item_component)
+                elif item_choice == 'teleport_scroll':
+                    item_component = Item(use_function=teleport, targeting=True, targeting_message=Message(
+                        'Left-click a target tile for the teleport, or right-click to cancel.', libtcod.light_cyan),
+                                          game_map=self)
+                    item = Entity(x, y, '#', libtcod.purple, 'Teleport', render_order=RenderOrder.ITEM,
                                   item=item_component)
 
                 entities.append(item)
@@ -221,6 +229,10 @@ class GameMap:
         player.fighter.heal(player.fighter.max_hp // 2)
 
         message_log.add_message(Message('You take a moment to rest, and recover your strength.', libtcod.light_violet))
+
+        for item in player.inventory.items:
+            if hasattr(item, 'game_map'):
+                item.game_map = self
 
         return entities
 

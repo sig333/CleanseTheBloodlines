@@ -167,6 +167,7 @@ def play_game(player, entities, game_map, message_log, con, panel, constants, ga
             targeting = player_turn_result.get('targeting')
             targeting_cancelled = player_turn_result.get('targeting_cancelled')
             xp = player_turn_result.get('xp')
+            teleport = player_turn_result.get('teleport')
 
             if message:
                 message_log.add_message(message)
@@ -185,6 +186,11 @@ def play_game(player, entities, game_map, message_log, con, panel, constants, ga
                 game_state = GameStates.ENEMY_TURN
 
             if item_consumed:
+                game_state = GameStates.ENEMY_TURN
+
+            if teleport:
+                player.teleport(teleport.get('x'), teleport.get('y'))
+                fov_recompute = True
                 game_state = GameStates.ENEMY_TURN
 
             if item_dropped:
